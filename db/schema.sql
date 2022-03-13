@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS employee;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS department; 
+

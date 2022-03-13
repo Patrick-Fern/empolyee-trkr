@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "express": "^4.17.3",
+    "mysql2": "^2.3.3"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "employee-trkr",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Patrick-Fern/empolyee-trkr.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Patrick-Fern/empolyee-trkr/issues"
+  },
+  "homepage": "https://github.com/Patrick-Fern/empolyee-trkr#readme",
+  "description": ""
+}
