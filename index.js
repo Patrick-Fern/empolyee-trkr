@@ -28,10 +28,10 @@ function firstQuestion () {
                 addRole();
                 break;
             case "add an employee":
-                console.log("added employee");
+                addEmployee();
                 break;
-            case "update an emplyoee role":
-                console.log('updated employee role');
+            case "update an employee role":
+                updateEmployee();
                 break;
             case "exit":
                 console.log('thank you');
@@ -118,25 +118,126 @@ function addRole() {
             message: 'What is the salary for the role?'
          }
         ]).then(function(answer){
-            console.log(answer.salary);
             const sql = `insert into roles (title, salary, department_id) VALUES (?,?,?)`;
             const params = [answer.title, answer.salary, answer.department_id];
 
-            db.query(sql, params, (err, result) =>{
-                if (err) {
-                    console.log(err);
-                }
-                console.log(result)
+            db.query(sql, params).spread(function (result){
+                console.log(result);
+            }).then(function(){
+                firstQuestion();
             });
+        }); 
+    });
+}; 
+
+function addEmployee() {
+
+    const sql1 = `select employee.id, employee.first_name, employee.last_name, roles.title as Job_title, department.name as department_name, roles.salary as salary
+    from employee
+    left join roles
+    on role_id = roles.id
+    left join department
+    on department_id = department.id`;
+
+    db.query(sql1).spread(function (employee) {
+        console.table(employee)});
+
+    const sql = `select roles.title, roles.id, department.name AS department, roles.salary
+    from roles
+    left join department
+    on roles.department_id = department.id`;
+
+    db.query(sql).spread(function (roles) {
+       console.table(roles)
+
+       inquirer.prompt([
+        {
+        type: 'number',
+        name: 'role_id',
+        message: 'What is the id of the role this employee will preform?'
+        },
+        {
+           type: 'input',
+           name: 'first_name',
+           message: 'what is their first name'
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: 'what is their last name'
+         },
+        {
+           type: 'number',
+           name: 'manager_id',
+           message: 'What is the id of their manager?'
+        }
+    ]).then(function(answer){
+        const sql = `insert into employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
+        const params = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id];
+
+        db.query(sql, params).spread(function (result){
+            console.log(result);
         }).then(function(){
             firstQuestion();
-        });       
+        });
+        }); 
     });
-}
+};
+
+function updateEmployee() {
+    console.log('call ok');
+    const sql1 = `select employee.id, employee.first_name, employee.last_name, roles.title as Job_title, department.name as department_name, roles.salary as salary
+    from employee
+    left join roles
+    on role_id = roles.id
+    left join department
+    on department_id = department.id`;
+
+    db.query(sql1).spread(function (employee) {
+        console.table(employee)});
+
+    const sql = `select roles.title, roles.id, department.name AS department, roles.salary
+    from roles
+    left join department
+    on roles.department_id = department.id`;
+
+    db.query(sql).spread(function (roles) {
+       console.table(roles)
+
+       inquirer.prompt([
+        {
+        type: 'number',
+        name: 'id',
+        message: 'What is the id of the employee changing roles?'
+        },
+        {
+           type: 'number',
+           name: 'role_id',
+           message: 'what is the id of their new role?'
+        }
+    ]).then(function(answer){
+        const sql = `UPDATE employee SET role_id = ?
+                    WHERE id =?`;
+        const params = [answer.role_id, answer.id];
+
+        db.query(sql, params).spread(function (result){
+            console.log(result);
+        }).then(function(){
+            firstQuestion();
+        });
+    });
+});         
+};
+
+
+
+
+           
+
 
 function exit() {
     console.log('Thank you');
-    db.query(`quit`);
+    db.query('quit;');
 }
 
 
