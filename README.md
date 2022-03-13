@@ -10,7 +10,7 @@ An application that allows users to look up, add and edit the eployee's in their
 
 
 ## Video 
-https://damp-coast-57233.herokuapp.com/
+https://bootcampspot.instructuremedia.com/embed/489e397c-0fb6-44be-8d3c-646dce5ecaec 
 
 ## Repository 
 https://github.com/Patrick-Fern/note-taker
